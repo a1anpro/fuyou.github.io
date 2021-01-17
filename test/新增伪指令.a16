@@ -1,0 +1,6 @@
+
+set2 f1 3
+jump @main_func
+@main_func
+    .var temp 10
+halt
