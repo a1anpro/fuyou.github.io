@@ -105,57 +105,30 @@ var select = function(editor, line) {
     editor.addLineClass(line, "wrap", "highlight-background")
 }
 
+var change_editor = function(){
+    // 改成执行标准汇编
+    var asm_code = asmEditor.getValue()
+    // var asm_code = asmEditor.getValue()
 
-var asm_code = `
-jump @1024
-.memory 1024
+    var asm = Assembler.new(asm_code)
+    asm.run()
+    // 机器码
+    code_memory = asm.get_machine_code()
+    log('code_memory:\n', code_memory.slice(1024))
+    // 标准汇编
+    std_code = asm.get_std_code()
 
-set2 f1 3 ;一开始设置到栈顶
-jump @function_end ;先去设置一下内存结构
+    code_length = code_memory.length
+    mcode_lines = asm.get_mcode_lines() // 得到机器码对应于汇编码的行数
 
-@function_multiply ;6
-set2 a3 2
-save2 a1 @65534
+    log('【mcode长度】', mcode_lines.length)
 
-@while_start  ;15
-compare a2 a3
-jump_if_less @while_end
+    label_map = asm.get_labelmap()
+    // 将翻译好的机器码按格式显示
+    // showMachineCode(mcodeEditor, code_memory)
+    showStdCode(mcodeEditor, std_code)
+}
 
-; 用a2来给a3加1
-save2 a2 @65532
-set2 a2 1
-add2 a3 a2 a3
-
-; 把a1原来的值存起来在加
-load2 @65534 a2
-add2 a1 a2 a1
-
-load2 @65532 a2
-jump @while_start ;18
-@while_end ;47
-
-set2 a3 2
-subtract2 f1 a3 f1
-load_from_register2 f1 a2
-jump_from_register a2
-
-@function_end ;61
-
-;设置参数
-set2 a1 10
-set2 a2 3
-
-set2 a3 14 ;4字节,设置f1是调用函数之后返回的位置
-add2 pa a3 a3 ;4字节
-
-save_from_register2 a3 f1 ;3字节
-set2 a3 2 ;4字节
-add2 f1 a3 f1 ;4字节
-jump @function_multiply ;3字节,10
-halt
-`
-
-asmEditor.setValue(asm_code)
 // 全局的行号和机器码
 var code_memory = []
 // pa的最大范围, 由于pa是程序计数器，所以只会指向代码段
@@ -176,38 +149,14 @@ var registers = null
 var memory = null
 var memory_table = e('.memory-table')
 
-var change_editor = function(){
-    // 改成执行标准汇编
-    var asm_code = asmEditor.getValue()
-    // var asm_code = asmEditor.getValue()
-
-    var asm = Assembler.new(asm_code)
-    asm.run()
-    // 机器码
-    code_memory = asm.get_machine_code()
-    log('code_memory:\n', code_memory.slice(1024))
-    // 标准汇编
-    std_code = asm.get_std_code()
-
-    code_length = code_memory.length
-    mcode_lines = asm.get_mcode_lines() // 得到机器码对应于汇编码的行数
-
-    label_map = asm.get_labelmap()
-    // 将翻译好的机器码按格式显示
-    // showMachineCode(mcodeEditor, code_memory)
-    showStdCode(mcodeEditor, std_code)
-}
-
 // 编辑完asmEditor则执行汇编器,不应该用update
 asmEditor.on("change", function(){
     change_editor()
 })
 
- // 点击运行按钮
+// 点击运行按钮
 e('#run-button').onclick = function(){
     // 检查代码不为空且无错误
-    log('点击运行')
-
     // 点击运行的时候检查是否为debug模式
     if (has_breakpoints()){
         debug_mode = true
@@ -216,6 +165,8 @@ e('#run-button').onclick = function(){
     axepu = new AxePu(code_memory)
     // 初始化
     pa = 0
+
+    // 设置了run，定时器在扫描
     running = true
 
     if (debug_mode == true) {
@@ -406,7 +357,7 @@ var finish_process = function(){
 var run_next = function(){
     axepu.do_next_ins()
     pa = axepu.get_register('pa')
-    // log('pa:', pa, code_length)
+    log('pa:', pa, mcode_lines.length)
     if (pa >= mcode_lines.length){
         running = false
         axepu = null
@@ -431,12 +382,10 @@ var update_table = function(){
 
 // 需要用计时器来做监听，一旦鼠标点击的状态变了则更改运行状态
 setInterval(function(){
-
     // 更新寄存器表格
     if (running == true){
         update_mem_reg()
         update_table()
-
 
         if (debug_mode == false){
             run_next()
@@ -450,3 +399,60 @@ setInterval(function(){
  // 跳过按钮
  // 停止按钮
  // 重置按钮
+
+
+const _main = () => {
+    var asm_code = `jump @1024
+.memory 1024
+
+set2 f1 3 ;一开始设置到栈顶
+jump @function_end ;先去设置一下内存结构
+
+@function_multiply ;6
+set2 a3 2
+save2 a1 @65534
+
+@while_start  ;15
+compare a2 a3
+jump_if_less @while_end
+
+; 用a2来给a3加1
+save2 a2 @65532
+set2 a2 1
+add2 a3 a2 a3
+
+; 把a1原来的值存起来在加
+load2 @65534 a2
+add2 a1 a2 a1
+
+load2 @65532 a2
+jump @while_start ;18
+@while_end ;47
+
+set2 a3 2
+subtract2 f1 a3 f1
+load_from_register2 f1 a2
+jump_from_register a2
+
+@function_end ;61
+
+;设置参数
+set2 a1 10
+set2 a2 3
+
+set2 a3 14 ;4字节,设置f1是调用函数之后返回的位置
+add2 pa a3 a3 ;4字节
+
+save_from_register2 a3 f1 ;3字节
+set2 a3 2 ;4字节
+add2 f1 a3 f1 ;4字节
+jump @function_multiply ;3字节,10
+halt
+`
+
+    asmEditor.setValue(asm_code)
+// 手动调用change
+    change_editor()
+}
+
+_main()

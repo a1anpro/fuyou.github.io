@@ -394,8 +394,7 @@ var test_jump_if_less_2 = function() {
 }
 
 var test_multiply = function() {
-    asm_code = `
-jump @1024
+    asm_code = `jump @1024
 .memory 1024
 
 set2 f1 3 ;一开始设置到栈顶
