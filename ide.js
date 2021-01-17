@@ -10,21 +10,21 @@ var asmEditor = CodeMirror.fromTextArea(e("#asm_code"), {
     mode: "text/x-z80",
     matchBrackets: true,
     autoCloseBrackets: true
-    });
+});
 
-    // 机器码显示区域，不可修改
+// 机器码显示区域，不可修改
 var mcodeEditor = CodeMirror.fromTextArea(e("#machine_code"), {
     mode: "text/x-z80",
     readOnly: true,
     lineWrapping: true,
     lineNumbers: true
-    })
+})
 
 asmEditor.setSize("auto", 600);
 mcodeEditor.setSize("auto", 500);
 
 // 点击产生断点
-asmEditor.on("gutterClick", function(editor, line, gutter, event){
+asmEditor.on("gutterClick", function (editor, line, gutter, event) {
     var info = editor.lineInfo(line)
     // log('产生断点', line)
     // log('line info:', info)
@@ -33,47 +33,47 @@ asmEditor.on("gutterClick", function(editor, line, gutter, event){
     // 如果有红点了则取消
     // log('guttermarker:', info.gutterMarkers)
     // gutterMarkers是info的属性
-    if (info.gutterMarkers != undefined){
+    if (info.gutterMarkers != undefined) {
         clearGutter(editor, line)
-    } else{
+    } else {
         setGutter(editor, line)
     }
 })
 
 // 清除断点
-var clearGutter = function(editor, line){
+var clearGutter = function (editor, line) {
     // 删除该全局的断点
     delete window.breakpoints[line]
     editor.setGutterMarker(line, "breakpoints", null)
 }
 // 标记断点
-var setGutter = function(editor, line){
+var setGutter = function (editor, line) {
     // 设置全局的断点
     window.breakpoints[line] = true
     var marker = getGutterMarker()
     editor.setGutterMarker(line, "breakpoints", marker)
 }
 // 得到断点的模板
-var getGutterMarker = function(){
+var getGutterMarker = function () {
     var marker = document.createElement("div")
     marker.style.color = "blue"
     marker.innerHTML = "&nbsp▶ " //
     return marker
 }
 
-var showStdCode = function(area, std_code){
+var showStdCode = function (area, std_code) {
     area.setValue(std_code)
 }
 
-var showMachineCode = function(area, mcode){
+var showMachineCode = function (area, mcode) {
     var value = ""
     var b = ""
-    for (var i = 0; i < mcode.length; ++i){
+    for (var i = 0; i < mcode.length; ++i) {
         let m = mcode[i]
         // log('m:', m)
         let bin = parseInt(m).toString(2)
         let cnt = 8 - bin.length
-        for (let i = 0; i < cnt; ++i){
+        for (let i = 0; i < cnt; ++i) {
             bin = "0" + bin
         }
         b = b + bin + '\n'
@@ -84,44 +84,43 @@ var showMachineCode = function(area, mcode){
     area.setValue(value)
 }
 
-var success_highlight = function(editor, line) {
+var success_highlight = function (editor, line) {
     // editor.setCursor(line)
     // log('highlight,', line, editor)
     editor.addLineClass(line, "wrap", "success-highlight-background")
 }
-var highlight = function(editor, line) {
+var highlight = function (editor, line) {
     // log('高亮:',editor, line)
     // editor.setCursor(line)
     // log('highlight,', line, editor)
     editor.addLineClass(line, "wrap", "highlight-background")
 }
-var remove_highlight = function(editor, line) {
+var remove_highlight = function (editor, line) {
     // log('移除高亮,', line)
     editor.removeLineClass(line, "wrap", "highlight-background")
 }
-var select = function(editor, line) {
+var select = function (editor, line) {
     editor.setCursor(line)
     // log('select,', line, editor)
     editor.addLineClass(line, "wrap", "highlight-background")
 }
 
-var change_editor = function(){
+var change_editor = function () {
     // 改成执行标准汇编
     var asm_code = asmEditor.getValue()
-    // var asm_code = asmEditor.getValue()
+
+    log('【asm_code】', asm_code)
 
     var asm = Assembler.new(asm_code)
     asm.run()
     // 机器码
     code_memory = asm.get_machine_code()
-    log('code_memory:\n', code_memory.slice(1024))
+    // log('code_memory:\n', code_memory.slice(1024))
     // 标准汇编
     std_code = asm.get_std_code()
 
     code_length = code_memory.length
     mcode_lines = asm.get_mcode_lines() // 得到机器码对应于汇编码的行数
-
-    log('【mcode长度】', mcode_lines.length)
 
     label_map = asm.get_labelmap()
     // 将翻译好的机器码按格式显示
@@ -150,15 +149,15 @@ var memory = null
 var memory_table = e('.memory-table')
 
 // 编辑完asmEditor则执行汇编器,不应该用update
-asmEditor.on("change", function(){
+asmEditor.on("change", function () {
     change_editor()
 })
 
 // 点击运行按钮
-e('#run-button').onclick = function(){
+e('#run-button').onclick = function () {
     // 检查代码不为空且无错误
     // 点击运行的时候检查是否为debug模式
-    if (has_breakpoints()){
+    if (has_breakpoints()) {
         debug_mode = true
     }
     // 只有点运行才可以启动
@@ -172,42 +171,42 @@ e('#run-button').onclick = function(){
     if (debug_mode == true) {
         // 如果是debug模式，则停止运行，因为pa是停止的，只要改变running的状态即可
         //运行到断点处停下
-        while (pa < mcode_lines.length){
-          for (var p in window.breakpoints){
-              // log('p, pa:', p, mcode_lines[pa])
-              if (p == mcode_lines[pa]){
-                  find_breakpoint = true
-                  break
-              }
-          }
-          if (find_breakpoint){
-              break
-          }
-          axepu.do_next_ins()
-          // 执行一行更新pa
-          pa = axepu.get_register('pa')
+        while (pa < mcode_lines.length) {
+            for (var p in window.breakpoints) {
+                // log('p, pa:', p, mcode_lines[pa])
+                if (p == mcode_lines[pa]) {
+                    find_breakpoint = true
+                    break
+                }
+            }
+            if (find_breakpoint) {
+                break
+            }
+            axepu.do_next_ins()
+            // 执行一行更新pa
+            pa = axepu.get_register('pa')
         }
     }
 }
 
 // 点击下一步
-e('#next-button').onclick = function(){
+e('#next-button').onclick = function () {
     // log('点击下一步')
-    if (running == true){
+    if (running == true) {
         update_table()
         run_next()
     }
 }
 
 // 点击停止按钮
-e('#stop-button').onclick = function(){
-   log('点击停止')
-   // 初始化
-   running = false
+e('#stop-button').onclick = function () {
+    log('点击停止')
+    // 初始化
+    running = false
 }
 
 // 点击重置按钮
-e('#reset-button').onclick = function(){
+e('#reset-button').onclick = function () {
     change_editor()
     running = false
     pa = null
@@ -227,34 +226,34 @@ e('#reset-button').onclick = function(){
 }
 
 // 点击跳过按钮
-e('#continue-button').onclick = function(){
+e('#continue-button').onclick = function () {
     // 从当前断点执行到下一个断点
     var asm_pa = mcode_lines[pa]
     var keys = Object.keys(window.breakpoints)
 
     // 跳到的位置是：第一个比当前asm_pa大的断点处
     var tag = asm_pa
-    for (var i = 0; i < keys.length; ++i){
-        if (tag < keys[i]){
+    for (var i = 0; i < keys.length; ++i) {
+        if (tag < keys[i]) {
             tag = keys[i]
             break
         }
     }
     log('下一个断点:', tag)
-    while (asm_pa < tag){
+    while (asm_pa < tag) {
         run_next()
         asm_pa = mcode_lines[pa]
     }
 }
 
-var has_breakpoints = function(){
-    for (var p in window.breakpoints){
+var has_breakpoints = function () {
+    for (var p in window.breakpoints) {
         return true
     }
     return false
 }
 
-var reset_all = function(){
+var reset_all = function () {
     log('重置所有')
     clear_registers_table()
     clear_memory_table()
@@ -262,7 +261,7 @@ var reset_all = function(){
     clear_all_highlight()
 }
 
-var clear_registers_table = function(){
+var clear_registers_table = function () {
     var nodelist = e('#registers-tr').children
     for (var i = 0; i < nodelist.length; ++i) {
         var item = nodelist[i]
@@ -270,38 +269,38 @@ var clear_registers_table = function(){
     }
 }
 
-var clear_memory_table = function(){
+var clear_memory_table = function () {
     var memory_table = e('.memory-table')
     var len = memory_table.rows.length - 1  // 减去标题
     for (var i = 0; i < len; ++i) {
-        var row = memory_table.rows[i+1]
+        var row = memory_table.rows[i + 1]
         row.cells[0].removeAttribute('style')
         row.cells[1].innerHTML = 0
     }
 }
 
-var update_registers_table = function(){
+var update_registers_table = function () {
     // log('update_registers')
-    if (axepu != null){
+    if (axepu != null) {
         // 只要虚拟机运行了，就有寄存器了
         var registers = axepu.get_all_registers()
         var nodelist = e('#registers-tr').children
         var keys = Object.keys(registers)
         // log('keys:', keys)
         for (var i = 0; i < keys.length; ++i) {
-          var k = keys[i]
-          var item = nodelist[i]
-          item.innerHTML = registers[k]
+            var k = keys[i]
+            var item = nodelist[i]
+            item.innerHTML = registers[k]
         }
     } else {
 
     }
 }
 
-var update_memory_table = function(){
+var update_memory_table = function () {
     // 不应该每次都重新获取对象刷新，应该是获取新内存然后修改值
     // 刷新内存表格
-    if (axepu != null){
+    if (axepu != null) {
         // 只要虚拟机运行了，就有内存了
         // 更新f1的位置
         var f1 = parseInt(registers['f1'])
@@ -312,10 +311,10 @@ var update_memory_table = function(){
             var addr = i
             var data = stack_segment[i]
 
-            var row = memory_table.rows[i+1]
-            if (f1 == i){
+            var row = memory_table.rows[i + 1]
+            if (f1 == i) {
                 row.cells[0].setAttribute('style', 'background-color: red;')
-            } else{
+            } else {
                 row.cells[0].removeAttribute('style')
             }
             row.cells[0].innerHTML = addr
@@ -325,54 +324,83 @@ var update_memory_table = function(){
     }
 }
 
-var highligh_current_line = function(){
+var highligh_current_line = function () {
     // pa是当前行，除了pa以外其他都remove
-    if (running == true){
-        for (var i = 0; i < mcode_lines.length; ++i){
+    if (running == true) {
+        for (var i = 0; i < mcode_lines.length; ++i) {
             remove_highlight(asmEditor, mcode_lines[i])
             remove_highlight(mcodeEditor, i)
         }
-        if (pa < mcode_lines.length){
+        if (pa < mcode_lines.length) {
             highlight(asmEditor, mcode_lines[pa])
             highlight(mcodeEditor, pa)
         }
     }
 }
 
-var clear_all_highlight = function(){
-    for (var i = 0; i < mcode_lines.length; ++i){
+var clear_all_highlight = function () {
+    for (var i = 0; i < mcode_lines.length; ++i) {
         remove_highlight(asmEditor, mcode_lines[i])
         remove_highlight(mcodeEditor, i)
     }
 }
 
-var finish_process = function(){
+var finish_process = function () {
     log('执行完成的pa:', pa)
-    var line = pa-1
+    var line = pa - 1
     log('有效代码:', mcode_lines)
     success_highlight(asmEditor, mcode_lines[line])
     success_highlight(asmEditor, line)
 }
 
-var run_next = function(){
+var paPos = []
+
+showToast = (selector, style, innerHTML) => {
+    selector.addClass(style);
+
+    selector[0].innerHTML = innerHTML;
+    log('【select】', selector)
+    selector.fadeTo(2000, 500).slideUp(500, function () {
+        selector.hide();
+    });
+}
+
+var run_next = function () {
     axepu.do_next_ins()
     pa = axepu.get_register('pa')
-    log('pa:', pa, mcode_lines.length)
-    if (pa >= mcode_lines.length){
+
+    // 如果pa连续多次一样，就可以直接杀掉了
+    if (paPos.length >= 1000000) {
+        paPos = []
+    } else {
+        paPos.push(pa)
+    }
+
+    // 判断paPos是不是连续为一样的值
+    if (paPos.filter(item => item == pa).length >= 5) {
+        running = false
+        axepu = null
+
+        showToast($('#alert-div'), 'alert alert-danger', 'pa指向同一内存地址，可能超时！请重试')
+        log('timeout')
+    }
+
+    // log('pa:', pa, mcode_lines.length, paPos)
+    if (pa >= mcode_lines.length) {
         running = false
         axepu = null
         log('结束')
     }
 }
 
-var update_mem_reg = function(){
-    if (axepu != null && running){
+var update_mem_reg = function () {
+    if (axepu != null && running) {
         registers = axepu.get_all_registers()
         memory = axepu.get_memory()
     }
 }
 
-var update_table = function(){
+var update_table = function () {
     update_registers_table()
     // 刷新内存显示就 会耗时
     update_memory_table()
@@ -381,24 +409,24 @@ var update_table = function(){
 }
 
 // 需要用计时器来做监听，一旦鼠标点击的状态变了则更改运行状态
-setInterval(function(){
+setInterval(function () {
     // 更新寄存器表格
-    if (running == true){
+    if (running == true) {
         update_mem_reg()
         update_table()
 
-        if (debug_mode == false){
+        if (debug_mode == false) {
             run_next()
         }
     }
 
 
-}, 1000/30)
+}, 1000 / 30)
 
- // 下一步按钮
- // 跳过按钮
- // 停止按钮
- // 重置按钮
+// 下一步按钮
+// 跳过按钮
+// 停止按钮
+// 重置按钮
 
 
 const _main = () => {

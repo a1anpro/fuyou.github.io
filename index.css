@@ -1,0 +1,42 @@
+.success-highlight-background {
+    background: #00FF7F;
+    /* background: gray; */
+}
+
+.highlight-background {
+    background: #ea9f93;
+    /* background: gray; */
+}
+
+.select-background {
+    background: #87CEFA;
+    /* background: gray; */
+}
+
+.code-area {
+    float: right;
+    width: 60%;
+}
+
+.asm-code-div {
+    float: left;
+    width: 45%;
+    border: 1px solid #95c7ea;
+    border-radius: 10px;
+}
+
+.machine-code-div {
+    float: right;
+    width: 45%;
+    border: 1px solid #95c7ea;
+    border-radius: 10px
+}
+
+.registers {
+    text-align: center;
+}
+
+tr td {
+    border: 1px solid #000;
+    width: 100px;
+}
