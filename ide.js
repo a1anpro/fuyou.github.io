@@ -9,7 +9,8 @@ var asmEditor = CodeMirror.fromTextArea(e("#asm_code"), {
     gutters: ["breakpoints", "CodeMirror-linenumbers"],
     mode: "text/x-z80",
     matchBrackets: true,
-    autoCloseBrackets: true
+    autoCloseBrackets: true,
+    theme: 'darcula',
 });
 
 // 机器码显示区域，不可修改
@@ -17,7 +18,8 @@ var mcodeEditor = CodeMirror.fromTextArea(e("#machine_code"), {
     mode: "text/x-z80",
     readOnly: true,
     lineWrapping: true,
-    lineNumbers: true
+    lineNumbers: true,
+    theme: 'darcula',
 })
 
 asmEditor.setSize("auto", 600);
@@ -56,7 +58,7 @@ var setGutter = function (editor, line) {
 // 得到断点的模板
 var getGutterMarker = function () {
     var marker = document.createElement("div")
-    marker.style.color = "blue"
+    marker.style.color = "#00ff00"
     marker.innerHTML = "&nbsp▶ " //
     return marker
 }
@@ -146,7 +148,7 @@ var finished = false
 // 运行时的寄存器和内存，一直刷新
 var registers = null
 var memory = null
-var memory_table = e('.memory-table')
+var memory_table = e('#memory-table')
 
 // 编辑完asmEditor则执行汇编器,不应该用update
 asmEditor.on("change", function () {
@@ -297,6 +299,12 @@ var update_registers_table = function () {
     }
 }
 
+var str_pad = function (hex) {
+    var zero = '0000';
+    var tmp = 4 - hex.length;
+    return '0X' + zero.substr(0, tmp) + hex.toUpperCase();
+}
+
 var update_memory_table = function () {
     // 不应该每次都重新获取对象刷新，应该是获取新内存然后修改值
     // 刷新内存表格
@@ -313,12 +321,12 @@ var update_memory_table = function () {
 
             var row = memory_table.rows[i + 1]
             if (f1 == i) {
-                row.cells[0].setAttribute('style', 'background-color: red;')
+                row.cells[0].setAttribute('style', 'background-color: red')
             } else {
                 row.cells[0].removeAttribute('style')
             }
-            row.cells[0].innerHTML = addr
-            row.cells[1].innerHTML = data
+            row.cells[0].innerHTML = addr + ' [' + str_pad(addr.toString(16)) + ']'
+            row.cells[1].innerHTML = data + ' [' + str_pad(data.toString(16)) + ']'
         }
     } else {
     }

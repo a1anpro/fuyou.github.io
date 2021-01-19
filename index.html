@@ -9,7 +9,7 @@
        
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <link rel="Shortcut Icon" href="./static/gua.png" type="image/x-icon" />
+    <link rel="Shortcut Icon" href="./static/gua.png" type="image/x-icon"/>
     <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.5.3/css/bootstrap-grid.min.css" rel="stylesheet">
     <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.5.3/css/bootstrap-reboot.min.css"
@@ -20,7 +20,9 @@
     <script src="https://cdn.bootcdn.net/ajax/libs/lodash.js/4.17.20/lodash.core.min.js"></script>
 
     <link href="https://cdn.bootcdn.net/ajax/libs/codemirror/5.58.3/codemirror.min.css" rel="stylesheet">
-    <link href="https://cdn.bootcdn.net/ajax/libs/codemirror/5.58.3/theme/monokai.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcdn.net/ajax/libs/codemirror/5.58.3/theme/darcula.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcdn.net/ajax/libs/codemirror/5.58.3/theme/ayu-dark.min.css" rel="stylesheet">
+
     <script src="https://cdn.bootcdn.net/ajax/libs/codemirror/5.58.3/codemirror.min.js"></script>
     <script src="https://cdn.bootcdn.net/ajax/libs/codemirror/5.58.3/mode/javascript/javascript.min.js"></script>
     <script src="https://cdn.bootcdn.net/ajax/libs/codemirror/5.58.3/mode/z80/z80.min.js"></script>
@@ -43,61 +45,72 @@
 <div class="code-editor">
     <div id="alert-div" class="test" role="alert">
     </div>
+    <div class="title">
+        <span>AXE ASM IDE</span>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm">
+                <div class="asm-code-div" style="">
+                    <p class="area-title">Pseudo code</p>
+                    <textarea id="asm_code"></textarea>
+                </div>
+            </div>
+            <div class="col-sm">
+                <div class="control-buttons">
+                    <button id="run-button" type="button" class="btn btn-primary">Run</button>
+                    <button id="next-button" type="button" class="btn btn-success">Next</button>
+                    <button id="continue-button" type="button" class="btn btn-warning">Jump</button>
+                    <button id="stop-button" type="button" class="btn btn-danger">Stop</button>
+                    <button id="reset-button" type="button" class="btn btn-info">Reset</button>
+                </div>
 
-    <div class="code-area">
-        <div class="asm-code-div" style="">
-            <p>伪代码</p>
-            <textarea id="asm_code"></textarea>
+                <div class="registers">
+                    <table class="table" border="0" cellspacing="0" cellpadding="0">
+                        <tr class="name">
+                            <td>pa</td>
+                            <td>a1</td>
+                            <td>a2</td>
+                            <td>a3</td>
+                            <td>c1</td>
+                            <td>f1</td>
+                        </tr>
+
+                        <tr id="registers-tr" class="value">
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="memory">
+                    <table id="memory-table" class="table">
+                        <tr>
+                            <td>MEM ADDR</td>
+                            <td>MEM DATA</td>
+                        </tr>
+
+                    </table>
+                </div>
+
+
+            </div>
+            <div class="col-sm">
+                <div class="machine-code-div">
+                    <p class="area-title">Standard asm code</p>
+                    <textarea id="machine_code"></textarea>
+                </div>
+            </div>
         </div>
-        <div class="machine-code-div">
-            <p>标准汇编</p>
-            <textarea id="machine_code"></textarea>
-        </div>
     </div>
 
-    <div class="control-buttons">
-        <button id="run-button" type="button" class="btn btn-primary">运行</button>
-        <button id="next-button" type="button" class="btn btn-success">下一步</button>
-        <button id="continue-button" type="button" class="btn btn-warning">跳过</button>
-        <button id="stop-button" type="button" class="btn btn-danger">停止</button>
-        <button id="reset-button" type="button" class="btn btn-info">重置</button>
-    </div>
-
-    <div style="float: left; width:auto; height:700px; overflow:scroll; overflow-x:hidden;">
-        <table class="memory-table" border="0" cellspacing="0" cellpadding="0">
-            <tr>
-                <td>内存地址</td>
-                <td>内存数据</td>
-            </tr>
-
-        </table>
-    </div>
-
-    <div class="registers">
-        <table border="0" cellspacing="0" cellpadding="0">
-            <tr>
-                <td>pa</td>
-                <td>a1</td>
-                <td>a2</td>
-                <td>a3</td>
-                <td>c1</td>
-                <td>f1</td>
-            </tr>
-
-            <tr id="registers-tr">
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-            </tr>
-        </table>
-    </div>
-       
 </div>
 <script>
-    var memory_table = e('.memory-table')
+    var memory_table = e('#memory-table')
     for (var i = 0; i < 1024; ++i) {
         var row = memory_table.insertRow(i + 1)
         var td1 = row.insertCell(0)
