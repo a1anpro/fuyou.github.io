@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Title</title>
+    <style>
+        p {
+            font-size: 30px;
+            animation-duration: 3s;
+            animation-name: slidein;
+        }
+
+        @keyframes slidein {
+            from {
+                margin-left: 100%;
+                width: 300%;
+            }
+
+            to {
+                margin-left: 0%;
+                width: 100%;
+            }
+        }
+
+        div {
+            animation: glow 1s infinite;
+        }
+
+        @keyframes glow {
+            from {
+                /*border-shadow: #00a4a2;*/
+                border: 1px solid red;
+                ext-shadow: 5px 5px 5px #ff0000;
+            }
+
+            to {
+                border: 1px solid #00ff00;
+                ext-shadow: 10px 10px 10px #0000ff;
+            }
+        }
+    </style>
+</head>
+<body>
+<div>
+    <p>lin!</p>
+</div>
+</body>
+</html>
