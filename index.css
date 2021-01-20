@@ -133,12 +133,13 @@ body {
 
 
 .asm-code-div {
-    float: left;
+    width: 360px;
     border: 2px dashed #00ff00;
     border-radius: 10px;
 }
 
 .machine-code-div {
+    width: 360px;
     border: 2px dashed #00ff00;
     border-radius: 10px
 }

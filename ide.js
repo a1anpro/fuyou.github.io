@@ -129,6 +129,7 @@ var change_editor = function () {
     // showMachineCode(mcodeEditor, code_memory)
     showStdCode(mcodeEditor, std_code)
 }
+var paPos = []
 
 // 全局的行号和机器码
 var code_memory = []
@@ -169,6 +170,8 @@ e('#run-button').onclick = function () {
 
     // 设置了run，定时器在扫描
     running = true
+    // 初始化
+    paPos = []
 
     if (debug_mode == true) {
         // 如果是debug模式，则停止运行，因为pa是停止的，只要改变running的状态即可
@@ -207,6 +210,7 @@ e('#stop-button').onclick = function () {
     running = false
 }
 
+
 // 点击重置按钮
 e('#reset-button').onclick = function () {
     change_editor()
@@ -216,6 +220,7 @@ e('#reset-button').onclick = function () {
     debug_mode = false
     find_breakpoint = false
     finished = false
+    paPos = []
 
     reset_all()
     // 去除所有断点
@@ -259,7 +264,6 @@ var reset_all = function () {
     log('重置所有')
     clear_registers_table()
     clear_memory_table()
-
     clear_all_highlight()
 }
 
@@ -272,7 +276,7 @@ var clear_registers_table = function () {
 }
 
 var clear_memory_table = function () {
-    var memory_table = e('.memory-table')
+    var memory_table = e('#memory-table')
     var len = memory_table.rows.length - 1  // 减去标题
     for (var i = 0; i < len; ++i) {
         var row = memory_table.rows[i + 1]
@@ -361,13 +365,9 @@ var finish_process = function () {
     success_highlight(asmEditor, line)
 }
 
-var paPos = []
-
 showToast = (selector, style, innerHTML) => {
     selector.addClass(style);
-
     selector[0].innerHTML = innerHTML;
-    log('【select】', selector)
     selector.fadeTo(2000, 500).slideUp(500, function () {
         selector.hide();
     });
@@ -376,22 +376,32 @@ showToast = (selector, style, innerHTML) => {
 var run_next = function () {
     axepu.do_next_ins()
     pa = axepu.get_register('pa')
+    // log('【paPos】', paPos)
 
     // 如果pa连续多次一样，就可以直接杀掉了
-    if (paPos.length >= 1000000) {
+    if (paPos.length >= 1000) {
         paPos = []
     } else {
         paPos.push(pa)
     }
 
     // 判断paPos是不是连续为一样的值
-    if (paPos.filter(item => item == pa).length >= 5) {
-        running = false
-        axepu = null
-
-        showToast($('#alert-div'), 'alert alert-danger', 'pa指向同一内存地址，可能超时！请重试')
-        log('timeout')
+    // 从后往前找30个就可以了
+    const lastEle = paPos[paPos.length - 1]
+    let cnt = 0
+    for (let i = paPos.length - 1; i >= 0; i -= 1) {
+        if (lastEle === paPos[i]) {
+            cnt += 1
+        }
+        if (cnt >= 30) {
+            running = false
+            axepu = null
+            showToast($('#alert-div'), 'alert alert-danger', 'pa指向同一内存地址，可能超时！请重试')
+            log('timeout')
+        }
     }
+    // if (paPos.filter(item => item == pa).length >= 50) {
+    // }
 
     // log('pa:', pa, mcode_lines.length, paPos)
     if (pa >= mcode_lines.length) {
