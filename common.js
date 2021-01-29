@@ -30,11 +30,15 @@
                 title: 'ASM IDE',
             },
             {
-                href: `${root}/minesweeper/minesweeper.html`,
-                title: '扫雷',
+                href: `${root}/domMinesweeper/index.html`,
+                title: 'Dom扫雷',
+            },
+            {
+                href: `${root}/canvasMinesweeper/index.html`,
+                title: 'Canvas扫雷',
             },
         ]
-
+        log('config:', config)
         const map = config.map(item => templateCell(item.href, item.title))
         map.forEach(item => nav.appendChild(item))
         e('body').appendChild(nav)
