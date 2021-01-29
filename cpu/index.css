@@ -1,0 +1,203 @@
+/* 设置滚动条的样式 */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+/* 滚动槽 */
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    border-radius: 5px;
+}
+
+/* 滚动条滑块 */
+::-webkit-scrollbar-thumb {
+    border-radius: 5px;
+    background: #00ff00;
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+}
+
+/*::-webkit-scrollbar-thumb:window-inactive {*/
+/*    background: rgba(255, 0, 0, 0.4);*/
+/*}*/
+
+.title {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.title span {
+    font-size: 50px;
+    color: #00FF00;
+    font-style: italic;
+    animation: glow 4s infinite;
+    font-family: 'Orbitron', sans-serif;
+    font-weight: bold;
+}
+
+.axe {
+    position: relative;
+    bottom: 34px;
+    animation: shake 1s infinite;
+}
+
+@keyframes shake {
+    0% {
+        transform: rotate(0deg);
+    }
+    10% {
+        transform: rotate(5deg);
+    }
+    20% {
+        transform: rotate(10deg);
+    }
+    30% {
+        transform: rotate(15deg);
+    }
+    40% {
+        transform: rotate(20deg);
+    }
+    50% {
+        transform: rotate(25deg);
+    }
+    60% {
+        transform: rotate(20deg);
+    }
+    70% {
+        transform: rotate(15deg);
+    }
+    80% {
+        transform: rotate(10deg);
+    }
+    90% {
+        transform: rotate(5deg);
+    }
+    100% {
+        transform: rotate(0deg);
+    }
+}
+
+@keyframes glow {
+    0% {
+        text-shadow: 2px 2px 10px #00ff00;
+    }
+
+    25% {
+        text-shadow: 4px 4px 20px #00dd00;
+    }
+
+    50% {
+        text-shadow: 2px 2px 10px #00ff00;
+    }
+
+    75% {
+        text-shadow: 4px 4px 20px #00dd00;
+    }
+
+    100% {
+        text-shadow: 2px 2px 10px #00ff00;
+    }
+}
+
+.control-buttons {
+    text-align: center;
+}
+
+.area-title {
+    color: #00ff00;
+    text-align: center;
+    margin: 10px;
+}
+
+.CodeMirror {
+    height: 600px !important;
+}
+
+.CodeMirror-linenumber {
+    width: 30px !important;
+}
+
+body {
+    font-family: "Gill Sans", sans-serif;
+    background-color: #2b2b2b;
+}
+
+.success-highlight-background {
+    background: #00FF7F;
+    /* background: gray; */
+}
+
+.highlight-background {
+    background: #ea9f93;
+    /* background: gray; */
+}
+
+.select-background {
+    background: #87CEFA;
+    /* background: gray; */
+}
+
+.registers {
+    margin: 15px;
+}
+
+.registers table {
+    color: #00ff00;
+}
+
+.registers tr td {
+    width: 100px;
+    text-align: center;
+}
+
+.registers .name {
+    border: 2px dashed #00ff00;
+    border-bottom: none;
+    height: 30px;
+}
+
+.registers .value {
+    border: 2px dashed #00ff00;
+    border-top: none;
+    height: 30px;
+}
+
+.memory {
+    border: 2px dashed #00ff00;
+    height: 490px;
+    overflow: scroll;
+    overflow-x: hidden;
+}
+
+.memory .table {
+    width: 100%;
+    color: #00ff00;
+}
+
+.memory tr td {
+    width: 100px;
+    text-align: center;
+}
+
+.code-area {
+    float: right;
+    width: 60%;
+}
+
+
+.asm-code-div {
+    width: 360px;
+    border: 2px dashed #00ff00;
+    border-radius: 10px;
+}
+
+.machine-code-div {
+    width: 360px;
+    border: 2px dashed #00ff00;
+    border-radius: 10px
+}
+
+
+/*tr td {*/
+/*    border: 1px solid #000;*/
+/*    width: 100px;*/
+/*}*/

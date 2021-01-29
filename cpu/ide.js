@@ -111,7 +111,7 @@ var change_editor = function () {
     // 改成执行标准汇编
     var asm_code = asmEditor.getValue()
 
-    log('【asm_code】', asm_code)
+    // log('【asm_code】', asm_code)
 
     var asm = Assembler.new(asm_code)
     asm.run()

@@ -1,5 +1,5 @@
 const log = console.log.bind(console)
-var e = (id)=>document.querySelector(id)
+var  e = (id)=>document.querySelector(id)
 const assert = console.assert.bind(console)
 
 // 将一个data分成高8位和低8位

@@ -490,6 +490,6 @@ jump_from_register a3 `
         }
         i++
     }
-    log('标准代码:\n', std_code)
+    // log('标准代码:\n', std_code)
     return std_code
 }

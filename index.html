@@ -1,13 +1,12 @@
 <html lang="en">
 <head>
-       
     <meta charset="UTF-8">
 
-       
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-       
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <link href="index.css" rel="stylesheet">
 
     <link rel="Shortcut Icon" href="./static/gua.png" type="image/x-icon"/>
     <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -29,97 +28,27 @@
     <script src="https://cdn.bootcdn.net/ajax/libs/codemirror/5.58.3/addon/edit/matchbrackets.min.js"></script>
     <script src="https://cdn.bootcdn.net/ajax/libs/codemirror/5.58.3/addon/edit/closebrackets.min.js"></script>
 
-    <link href="./index.css" rel="stylesheet">
-    <!-- 汇编器 -->
-    <script src="./preprocessor.js"></script>
-    <script src="./asm.js"></script>
-    <!-- 虚拟机 -->
-    <script src="./x16vm.js"></script>
-    <!-- 工具 -->
-    <script src="./utils.js"></script>
-
-        <title>ASM IDE</title>
+    <title>fuyou</title>
 </head>
 <body>
-   
-<div class="code-editor">
-    <div id="alert-div" class="test" role="alert">
-    </div>
-    <div class="title">
-        <img src="./static/axe.png">
-        <svg t="1611149249456" class="icon axe" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2232" width="32" height="32"><path d="M650.368 675.328l271.530667-271.530667 60.330666 60.373334-271.530666 271.530666-60.330667-60.373333z m-573.226667 30.208l422.4-422.4a42.666667 42.666667 0 0 1 60.288 0l60.373334 60.330667a42.666667 42.666667 0 0 1 0 60.330666l-422.4 422.4a42.666667 42.666667 0 0 1-60.330667 0L77.141333 765.866667a42.666667 42.666667 0 0 1 0-60.330667zM680.533333 162.474667l60.330667 60.330666a42.666667 42.666667 0 0 1 0 60.330667l-30.165333 30.165333a42.666667 42.666667 0 0 1-60.330667 0L589.994667 253.013333a42.666667 42.666667 0 0 1 0-60.330666l30.208-30.165334a42.666667 42.666667 0 0 1 60.330666 0z" fill="#1afa29" opacity=".3" p-id="2233"></path><path d="M891.733333 373.632c-110.634667-30.165333-181.034667-60.330667-211.2-90.496l-181.034666-181.034667L348.672 253.013333l180.992 181.034667c40.234667 40.192 70.4 110.592 90.538667 211.2l271.488-271.573333z" fill="#1afa29" p-id="2234"></path></svg>        <span>AXE ASM IDE</span>
-    </div>
-    <div class="container">
-        <div class="row">
-            <div class="col-sm">
-                <div class="asm-code-div" style="">
-                    <p class="area-title">Pseudo code</p>
-                    <textarea id="asm_code"></textarea>
-                </div>
-            </div>
-            <div class="col-sm">
-                <div class="control-buttons">
-                    <button id="run-button" type="button" class="btn btn-primary">Run</button>
-                    <button id="next-button" type="button" class="btn btn-success">Next</button>
-                    <button id="continue-button" type="button" class="btn btn-warning">Jump</button>
-                    <button id="stop-button" type="button" class="btn btn-danger">Stop</button>
-                    <button id="reset-button" type="button" class="btn btn-info">Reset</button>
-                </div>
+<!--    <div class="float-nav">-->
+<!--        <div>-->
+<!--            <a href='./cpu/index.html'>asm ide</a>-->
+<!--        </div>-->
+<!--        <div>-->
+<!--            <a href='./minesweeper/minesweeper.html'>扫雷</a>-->
+<!--        </div>-->
+<!--    </div>-->
 
-                <div class="registers">
-                    <table class="table" border="0" cellspacing="0" cellpadding="0">
-                        <tr class="name">
-                            <td>pa</td>
-                            <td>a1</td>
-                            <td>a2</td>
-                            <td>a3</td>
-                            <td>c1</td>
-                            <td>f1</td>
-                        </tr>
-
-                        <tr id="registers-tr" class="value">
-                            <td>0</td>
-                            <td>0</td>
-                            <td>0</td>
-                            <td>0</td>
-                            <td>0</td>
-                            <td>0</td>
-                        </tr>
-                    </table>
-                </div>
-
-                <div class="memory">
-                    <table id="memory-table" class="table">
-                        <tr>
-                            <td>MEM ADDR</td>
-                            <td>MEM DATA</td>
-                        </tr>
-
-                    </table>
-                </div>
-
-
-            </div>
-            <div class="col-sm">
-                <div class="machine-code-div">
-                    <p class="area-title">Standard asm code</p>
-                    <textarea id="machine_code"></textarea>
-                </div>
-            </div>
-        </div>
-    </div>
-
-</div>
-<script>
-    var memory_table = e('#memory-table')
-    for (var i = 0; i < 1024; ++i) {
-        var row = memory_table.insertRow(i + 1)
-        var td1 = row.insertCell(0)
-        var td2 = row.insertCell(1)
-        td1.innerHTML = i
-        td2.innerHTML = 0
-    }
-</script>
-<script src="ide.js"></script>
+    <script>
+        const getRoot = () => {
+            const path = window.document.location.href
+            const hs = path.split('/')
+            const root = hs.slice(0, hs.indexOf('fuyoucpu') + 1).join('/')
+            return root
+        }
+        window.document.location.href = getRoot() + '/minesweeper/minesweeper.html'
+    </script>
+    <script src="common.js"></script>
 </body>
 </html>
