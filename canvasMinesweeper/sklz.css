@@ -2,12 +2,12 @@ body {
     background-image: url(static/background.png);
 }
 
-.start-button-div {
-    text-align: center;
-}
-
 #id-game-canvas {
     /*border: 1px solid red;*/
+}
+
+.title {
+    margin: 10px 0;
 }
 
 .red {

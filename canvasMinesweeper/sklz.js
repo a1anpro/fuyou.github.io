@@ -1,7 +1,38 @@
 const es = selector => document.querySelectorAll(selector)
 const e = selector => document.querySelector(selector)
 const log = console.log.bind(console)
+const genRandom = () => {
+    return Math.floor(Math.random() * Math.floor(9))
+}
 
+const STATUS_TYPE = {
+    NUMBER: 1,
+    CELL: 0,
+    BLACK_BOOM: -1,
+    RED_BOOM: -2,
+    EMPTY: -3,
+    FLAG: -4,
+    QUESTION: -5,
+}
+
+const MOUSE_TYPE = {
+    LEFT_CLICK: 0,
+    RIGHT_CLICK: 2,
+}
+
+const getEmptySquare = () => {
+    return [
+        [0, 0, 0, 0, 0, 0, 0, 0, 0,],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0,],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0,],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0,],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0,],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0,],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0,],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0,],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0,],
+    ]
+}
 
 const genMap = (square) => {
     // 遍历square所有元素，如果是地雷，则加周围的数字
@@ -30,7 +61,6 @@ const genMap = (square) => {
     return square
 }
 
-
 const drawCell = (ctx, img, x, y) => {
     ctx.drawImage(img, (x - 1) * cellSize, (y - 1) * cellSize)
 }
@@ -42,15 +72,19 @@ const drawRow = (ctx, img, line) => {
 }
 
 const drawSquare = (ctx) => {
+    // draw 之前需要先清除原来的
     for (let i = 1; i <= 9; i += 1) {
         drawRow(ctx, cell, i)
     }
 }
 
 const drawText = (ctx, text, x, y) => {
+    // 清除这个格子
+    // ctx.clearRect((x - 1) * 25, (y - 1) * 25, 25, 25)
+    drawCell(ctx, cell, x, y)
     ctx.font = "bold 20px Arial"
-    // log('text:', text, typeof text)
     const color = {
+        '0': 'white',
         '1': 'blue',
         '2': 'green',
         '3': 'red',
@@ -64,6 +98,23 @@ const drawText = (ctx, text, x, y) => {
     ctx.fillText(text, 8 + 25 * (x - 1), 25 * (y - 1) + 20)
 }
 
+const drawTestMap = (map) => {
+    for (let i = 0; i < 9; i += 1) {
+        for (let j = 0; j < 9; j += 1) {
+            const x = i + 1
+            const y = j + 1
+            const m = map[i][j]
+            if (m === 9) {
+                drawCell(testCtx, blackBoom, x, y)
+            } else if (m === 0) {
+                drawCell(testCtx, empty, x, y)
+            } else {
+                drawText(testCtx, map[i][j], x, y)
+            }
+        }
+    }
+}
+
 const getPos = (x, y) => {
     // 根据坐标 算网格坐标
     return [Math.ceil(x / 25), Math.ceil(y / 25)]
@@ -74,23 +125,24 @@ const renderSquare = (ctx) => {
     for (let i = 0; i < 9; i += 1) {
         for (let j = 0; j < 9; j += 1) {
             const status = statusMap[i][j]
-            if (status === 1) {
+            const x = i + 1
+            const y = j + 1
+            if (status === STATUS_TYPE.NUMBER) {
                 // 根据gameMap显示数字
-                drawText(gameCtx, gameMap[i][j].toString(), i + 1, j + 1)
-            } else if (status === -1) {
+                drawText(gameCtx, gameMap[i][j].toString(), x, y)
+            } else if (status === STATUS_TYPE.BLACK_BOOM) {
                 // 显示地雷
-                drawCell(gameCtx, blackBoom, i + 1, j + 1)
-            } else if (status === -2) {
-                drawCell(gameCtx, redBoom, i + 1, j + 1)
-            } else if (status === -3) {
-                // 展开的空白
-                drawCell(gameCtx, empty, i + 1, j + 1)
-            } else if (status === -4) {
-                drawCell(gameCtx, flagImg, i + 1, j + 1)
-            } else if (status === -5) {
-                drawCell(gameCtx, questionImg, i + 1, j + 1)
-            } else if (status === 0) {
-                drawCell(gameCtx, cell, i + 1, j + 1)
+                drawCell(gameCtx, blackBoom, x, y)
+            } else if (status === STATUS_TYPE.RED_BOOM) {
+                drawCell(gameCtx, redBoom, x, y)
+            } else if (status === STATUS_TYPE.EMPTY) {
+                drawCell(gameCtx, empty, x, y)
+            } else if (status === STATUS_TYPE.FLAG) {
+                drawCell(gameCtx, flagImg, x, y)
+            } else if (status === STATUS_TYPE.QUESTION) {
+                drawCell(gameCtx, questionImg, x, y)
+            } else if (status === STATUS_TYPE.CELL) {
+                drawCell(gameCtx, cell, x, y)
             }
         }
     }
@@ -99,13 +151,10 @@ const renderSquare = (ctx) => {
 const vjklAll = () => {
     for (let i = 0; i < 9; i += 1) {
         for (let j = 0; j < 9; j += 1) {
+            // 只展开炸弹
             const status = gameMap[i][j]
             if (status === 9) {
                 statusMap[i][j] = -1
-            } else if (status === 0) {
-                statusMap[i][j] = -3
-            } else {
-                statusMap[i][j] = 1
             }
         }
     }
@@ -121,9 +170,14 @@ const vjklAround = (i, j, flag) => {
         if (newX >= 0 && newY >= 0 && newX < 9 && newY < 9) {
             // log(i, j, newX, newY, `(${gameMap[newX][newY]})`)
             // 1- 满足坐标边界条件
-            // 2- 判断周围坐标是否符合打开条件，也就是地图为0的
-            if (gameMap[newX][newY] === 0) {
-                vjklSelf(newX, newY, flag)
+            // 2- 判断周围坐标是否符合打开条件，也就是地图为非9的
+            const s = gameMap[newX][newY]
+            if (s === 0) {
+                // 需要连锁反应
+                vjklSelf(newX, newY, -3)
+            } else if (s !== 9) {
+                // 不需要连锁反应
+                vjklSelf(newX, newY, 1)
             }
         }
     })
@@ -150,11 +204,14 @@ const handleClick = (ctx, x, y, type) => {
     // 如果gameMap是9，则展开所有的数据
     const i = x - 1
     const j = y - 1
-    if (type === 0) {
-        log('here')
+    const status = statusMap[i][j]
+    // log('type:', type)
+    // 非标记状态，才修改statusMap
+    if (type === MOUSE_TYPE.LEFT_CLICK && !inMarkStatus(x, y)) {
         const m = gameMap[i][j]
         if (m === 9) {
             // -2表示红色雷
+            gameOver = true
             vjklAll()
             statusMap[i][j] = -2
         } else if (m === 0) {
@@ -162,77 +219,95 @@ const handleClick = (ctx, x, y, type) => {
         } else {
             vjklSelf(i, j, 1)
         }
-    } else if (type === 2) {
+    } else if (type === MOUSE_TYPE.RIGHT_CLICK) {
+        // log('前status:', status)
         // 渲染旗子, 点击不同的次数 切换不同的状态
-        const status = statusMap[i][j]
-        log('status:', status)
-        if (status === 0) {
-            statusMap[i][j] = -4
-        } else if (status === -4) {
-            statusMap[i][j] = -5
-        } else if (status === -5) {
-            statusMap[i][j] = 0
+        if (status === STATUS_TYPE.CELL) {
+            statusMap[i][j] = STATUS_TYPE.FLAG
+        } else if (status === STATUS_TYPE.FLAG) {
+            statusMap[i][j] = STATUS_TYPE.QUESTION
+        } else if (status === STATUS_TYPE.QUESTION) {
+            statusMap[i][j] = STATUS_TYPE.CELL
         }
+        // log('后status:', statusMap[i][j])
     }
 
     renderSquare(ctx)
 }
 
-const bindEventDelegate = function (canvas, ctx) {
-    canvas.addEventListener('mousedown', (event) => {
-        const type = event.button
-        const [x, y] = getPos(event.offsetX, event.offsetY)
-        handleClick(ctx, x, y, type)
-    })
+const inMarkStatus = (x, y) => {
+    const status = statusMap[x - 1][y - 1]
+    return [STATUS_TYPE.FLAG, STATUS_TYPE.QUESTION].includes(status)
 }
 
-const gameStart = () => {
-    initMap()
-    // game canvas
-    drawSquare(gameCtx)
-    // 画测试数据地图
-    drawSquare(testCtx)
-    for (let i = 0; i < 9; i += 1) {
-        for (let j = 0; j < 9; j += 1) {
-            drawText(testCtx, gameMap[i][j], i + 1, j + 1)
-        }
+const handleMousedown = (event) => {
+    log('点击')
+    const type = event.button
+    const [x, y] = getPos(event.offsetX, event.offsetY)
+    // 第一次点击之后生成地图
+    if (firstClick && type === MOUSE_TYPE.LEFT_CLICK && !inMarkStatus(x, y)) {
+        firstClick = false
+        data = genTestData(x, y)
+        gameMap = genMap(data)
+        // 画出测试地图
+        drawTestMap(gameMap)
+    }
+    if (!gameOver) {
+        handleClick(gameCtx, x, y, type)
     }
 }
 
+const bindEventDelegate = function (canvas, ctx) {
+    canvas.removeEventListener('mousedown', handleMousedown)
+    canvas.addEventListener('mousedown', handleMousedown)
+}
+
+const clearSquare = (ctx) => {
+    ctx.clearRect(0, 0, 225, 225)
+}
+
 const run = () => {
-    gameStart()
+    clearSquare(gameCtx)
+    clearSquare(testCtx)
+
+    // 画空游戏表盘
+    drawSquare(gameCtx)
+    // 画测试表盘
+    drawSquare(testCtx)
+    initGlobalData()
+
     // 给canvas绑定点击事件，在gamectx上画图
     bindEventDelegate(gameCanvas, gameCtx)
 }
 
-const genRandom = () => {
-    return Math.floor(Math.random() * Math.floor(9))
-}
-
-const genTestData = () => {
-    let cnt = 12
-    let data = [
-        [0, 0, 0, 0, 0, 0, 0, 0, 0,],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0,],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0,],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0,],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0,],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0,],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0,],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0,],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0,],
-    ]
-
-    while (cnt) {
-        data[genRandom()][genRandom()] = 9
-        cnt -= 1
+const genTestData = (x, y) => {
+    let count = 20
+    let map = getEmptySquare()
+    // 随机地雷
+    while (count) {
+        map[genRandom()][genRandom()] = 9
+        count -= 1
     }
-    return data
+
+    // 手动设置第一次点击位置为0
+    map[x - 1][y - 1] = 0
+    const direction = [[-1, 0], [-1, -1], [-1, 1], [0, 1], [1, 1], [1, 0], [1, -1], [0, -1]]
+    // 周围也设置成0
+    direction.forEach(d => {
+        const newX = x - 1 + d[0]
+        const newY = y - 1 + d[1]
+
+        if (newX >= 0 && newY >= 0 && newX < 9 && newY < 9
+        ) {
+            map[newX][newY] = 0
+        }
+    })
+    return map
 }
 
-const initMap = () => {
-    data = genTestData()
-    gameMap = genMap(data)
+const initGlobalData = () => {
+    gameOver = false
+    firstClick = true
     statusMap = [
         [0, 0, 0, 0, 0, 0, 0, 0, 0,],
         [0, 0, 0, 0, 0, 0, 0, 0, 0,],
@@ -245,7 +320,6 @@ const initMap = () => {
         [0, 0, 0, 0, 0, 0, 0, 0, 0,],
     ]
 }
-
 
 // 先秋裤全局
 // 画布也先做全局的
@@ -273,7 +347,9 @@ const cellSize = 25
 
 let data = null
 let gameMap = null
-let statusMap = null
+let statusMap = getEmptySquare()
+let gameOver = false
+let firstClick = true
 
 const _main = () => {
     redBoom.onload = function () {

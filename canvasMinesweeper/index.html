@@ -7,12 +7,12 @@
 </head>
 <body>
 
-<div class="start-button-div">
-    <button onclick={gameStart()}>重开</button>
-</div>
 
 <div id="id-game-wrapper" class="wrapper">
-    <div>游戏区</div>
+    <div class="title">
+        <span>游戏区</span>
+        <button onclick={run()}>重开</button>
+    </div>
     <canvas id="id-game-canvas" width="225" height="225"></canvas>
 </div>
 
