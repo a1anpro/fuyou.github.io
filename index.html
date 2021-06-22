@@ -38,16 +38,10 @@
         myIframe.style.height = docHeight + 'px'
     }
 
+    var onTop = false
     $(window).scroll(function () {
         // 滚动条距离顶部的高度
         var scrollTop = $(this).scrollTop()
-
-        // 当前页面的总高度
-        var scrollHeight = $(document).height()
-
-        // 当前可视的页面高度
-        var clientHeight = $(this).height()
-
         var nav = $('.nav-bar')
         const toggleBg = () => {
             if (nav.hasClass('black')) {
@@ -58,12 +52,11 @@
                 nav.removeClass('gradient')
             }
         }
-        var onTop = false
         if (scrollTop >= 5) {
-            // console.log('脱离顶部了！')
+            console.log('脱离顶部了！')
             onTop = false
         } else {
-            // console.log('已经到顶了')
+            console.log('已经到顶了')
             onTop = true
         }
         if (onTop) {
