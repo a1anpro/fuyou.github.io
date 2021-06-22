@@ -20,7 +20,7 @@
     </nav>
     <div class="gutter"></div>
     <div>
-        <iframe src="./resume/index.html" name="myiframe" idth="100%" height="200%" frameborder="0" scrolling="no" class="route"></iframe>
+        <iframe class="route" src="./resume/index.html" name="myiframe" idth="100%" frameborder="0" scrolling="no"></iframe>
     </div>
 </div>
 <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -60,10 +60,10 @@
         }
         var onTop = false
         if (scrollTop >= 5) {
-            console.log('脱离顶部了！')
+            // console.log('脱离顶部了！')
             onTop = false
         } else {
-            console.log('已经到顶了')
+            // console.log('已经到顶了')
             onTop = true
         }
         if (onTop) {
@@ -71,5 +71,6 @@
         }
     })
 </script>
+
 </body>
 </html>
