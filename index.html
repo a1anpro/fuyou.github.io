@@ -43,24 +43,19 @@
         // 滚动条距离顶部的高度
         var scrollTop = $(this).scrollTop()
         var nav = $('.nav-bar')
-        const toggleBg = () => {
-            if (nav.hasClass('black')) {
-                nav.addClass('gradient')
-                nav.removeClass('black')
-            } else {
+
+        if (scrollTop >= 50) {
+            // console.log('脱离顶部了！')
+            if (nav.hasClass('gradient')) {
                 nav.addClass('black')
                 nav.removeClass('gradient')
             }
-        }
-        if (scrollTop >= 5) {
-            console.log('脱离顶部了！')
-            onTop = false
         } else {
-            console.log('已经到顶了')
-            onTop = true
-        }
-        if (onTop) {
-            toggleBg()
+            // console.log('已经到顶了')
+            if (nav.hasClass('black')) {
+                nav.addClass('gradient')
+                nav.removeClass('black')
+            }
         }
     })
 </script>
