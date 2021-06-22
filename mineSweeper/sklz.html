@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>canvas扫雷</title>
+    <link rel="stylesheet" href="sklz.css">
+</head>
+<body>
+
+
+<div id="id-game-wrapper" class="wrapper">
+    <div class="title">
+        <button class="restart-button" onclick={gameStart()}>重开</button>
+    </div>
+    <canvas id="id-game-canvas" width="225" height="225"></canvas>
+</div>
+
+<div id="id-test-wrapper" class="wrapper">
+    <div>Test Data</div>
+    <canvas id="id-test-canvas" width="225" height="225"></canvas>
+</div>
+
+<script src="sklz.js"></script>
+<script>
+    document.addEventListener('contextmenu', function (e) {
+        e.preventDefault()
+    })
+
+    document.addEventListener('selectstart', function (e) {
+        e.preventDefault()
+    })
+</script>
+</body>
+</html>

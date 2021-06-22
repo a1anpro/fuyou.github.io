@@ -1,0 +1,1 @@
+{"version":3,"sources":["cpu/main.js"],"names":["_main","test_preprocessor"],"mappings":"aAAA,IAAIA,MAAQ,WACRC,qBAGHD","file":"../../cpu/main.js","sourcesContent":["var _main = function(){\n    // test_vm()\n    // test_asm()\n    test_preprocessor()\n}\n\n_main()\n"]}

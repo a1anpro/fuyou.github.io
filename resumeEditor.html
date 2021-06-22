@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<body>
+<textarea id="text-input" oninput="this.editor.update()"
+          rows="6" cols="60">Type **Markdown** here.</textarea>
+<div id="preview"></div>
+<div id="md"></div>
+
+<script src="https://cdn.bootcdn.net/ajax/libs/markdown.js/0.5.0/markdown.min.js"></script>
+
+<script>
+    // console.log(markdown)
+    function Editor(input, preview) {
+        this.update = function () {
+            preview.innerHTML = markdown.toHTML(input.value);
+        };
+        input.editor = this;
+        this.update();
+    }
+
+    var $ = function (id) {
+        return document.getElementById(id);
+    };
+    new Editor($("text-input"), $("preview"));
+
+    var md = $('md')
+    var value = `
+- adfsaf
+- asfsdfasf
+    `
+    // md.innerHTML =
+
+    console.log(markdown.toHTML(value))
+</script>
+
+</body>
+</html>

@@ -1,0 +1,2 @@
+"use strict";var log=console.log.bind(console),isArray=function(r){return Array.isArray(r)},es=function(r){return document.querySelectorAll(r)},e=function(r){return document.querySelector(r)},arrayEquals=function r(e,n){if(e.length!==n.length)return!1;if(isArray(e)&&isArray(n))for(var t=0;t<e.length;t+=1){var u=e[t],i=n[t];if(isArray(u)){if(!r(u,i))return!1}else if(u!==i)return!1}return!0};
+//# sourceMappingURL=../maps/popstar/utils.js.map
