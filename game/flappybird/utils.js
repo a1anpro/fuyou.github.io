@@ -1,0 +1,1 @@
+"use strict";var randomBetween=function(n,o){o=Math.random()*(o-n+1);return Math.floor(o+n)},log=console.log.bind(console),isRectIntersect=function(n,o){var t=n.w,e=n.h,r=o.w,c=o.h;return!(o.y+c<n.y||n.y+e<o.y||o.x+r<n.x||n.x+t<o.x)};
