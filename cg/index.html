@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>triangle</title>
+        <style>
+            canvas {
+                /* outline: 1px dashed lightskyblue; */
+            }
+            body {
+                text-align: center;
+                background-color: black;
+            }
+            .config {
+                color: white;
+            }
+
+        </style>
+        <!-- 引入所有用到的文件 -->
+        <script src='renderer/gua_object.js'></script>
+        <script src='renderer/utils.js'></script>
+        <script src='renderer/vector.js'></script>
+        <script src='renderer/vertex.js'></script>
+        <script src='renderer/color.js'></script>
+
+        <script src='renderer/canvas.js'></script>
+
+        <script src='renderer/axemesh.js'></script>
+        <script src='renderer/matrix.js'></script>
+
+        <!-- gua3d 顶点 和 三角形下标 -->
+        <script src='gua3d/gua3d.js'></script>
+        <!-- 未存uv信息的axe3d -->
+        <script src='axe3d/axe3d.js'></script>
+        <!-- 存了uv信息的axe3d -->
+        <script src='axe3d/axe3d_2.js'></script>
+
+        <!-- axeimage的像素信息 -->
+        <script src='axeImage/axeimage.js'></script>
+
+        <!-- 滑条配置 -->
+        <script src='config.js'></script>
+    </head>
+    <body>
+        <canvas id="id-canvas" width="1000" height= "500"></canvas>
+        <!-- <canvas id="id-canvas1" width="400" height="500"></canvas> -->
+        <!-- 滑条容器 -->
+        <div class="config">
+<script>
+
+const testMix = function(canvas){
+    // front
+    let c = GuaColor.new(50, 200, 150, 128)
+    let z = 0
+    let v1 = GuaVertex.new(GuaVector.new(5, 0, z), c)
+    let v2 = GuaVertex.new(GuaVector.new(0, 10, z), c)
+    let v3 = GuaVertex.new(GuaVector.new(10, 10, z), c)
+    canvas.drawTriangle(v1, v2, v3)
+
+    // back
+    c = GuaColor.new(200, 50, 200, 128)
+    z = 10
+    let v4 = GuaVertex.new(GuaVector.new(10, 0, z), c)
+    let v5 = GuaVertex.new(GuaVector.new(5, 10, z), c)
+    let v6 = GuaVertex.new(GuaVector.new(15, 10, z), c)
+    canvas.drawTriangle(v4, v5, v6)
+}
+
+const drawChest = function(){
+    var canvas = GuaCanvas.new('#id-canvas')
+    canvas.setCorrection(status=true)
+
+    let mesh = AxeMesh.fromAxe3d(chest_axe3d, chest_axeimage)
+
+    let offset_x = 100
+    let offset_y = 50
+    // front
+    let c = GuaColor.new(50, 200, 150, 128)
+    let z = -1000
+    let v1 = GuaVertex.new(GuaVector.new(80+offset_x, 50+offset_y, z), c)
+    let v2 = GuaVertex.new(GuaVector.new(30+offset_x, 150+offset_y, z), c)
+    let v3 = GuaVertex.new(GuaVector.new(130+offset_x, 150+offset_y, z), c)
+
+
+    // back
+    c = GuaColor.new(200, 50, 200, 128)
+    z = -500
+    let v4 = GuaVertex.new(GuaVector.new(110+offset_x, 50+offset_y, z), c)
+    let v5 = GuaVertex.new(GuaVector.new(60+offset_x, 150+offset_y, z), c)
+    let v6 = GuaVertex.new(GuaVector.new(160+offset_x, 150+offset_y, z), c)
+
+    setInterval(function () {
+        canvas.clear()
+       // 在这里配置
+        canvas.camera = GuaCamera.new()
+        mesh.rotation.x = config.rotation_x.value
+        mesh.rotation.y = config.rotation_y.value
+        mesh.rotation.z = config.rotation_z.value
+
+        canvas.drawTriangle(v1, v2, v3)
+        canvas.drawTriangle(v4, v5, v6)
+
+        canvas.drawMesh(mesh)
+        canvas.render()
+    }, 1000/60)
+}
+
+const 透视矫正 = function(){
+    // var canvas1 = GuaCanvas.new('#id-canvas1')
+    // 透视矫正
+    // let mesh = AxeMesh.fromAxe3d(grid)
+    //
+    // setInterval(function () {
+    //     canvas.clear()
+    //     canvas1.clear()
+    //    // 在这里配置
+    //     canvas.camera = GuaCamera.new()
+    //     canvas1.camera = GuaCamera.new()
+    //
+    //     // mesh.rotation.x = config.rotation_x.value
+    //     // mesh.rotation.y = config.rotation_y.value
+    //     // mesh.rotation.z = config.rotation_z.value
+    //
+    //     // mesh.rotation.x += 0.05
+    //     // mesh.rotation.y += 0.005
+    //     // mesh.rotation.z += 0.01
+    //
+    //     canvas.drawMesh(mesh)
+    //     canvas1.drawMesh(mesh)
+    //
+    //     canvas.render()
+    //     canvas1.render()
+    // }, 1000/60)
+}
+
+// 函数名应该用 const 修饰, 这样不会被意外修改
+const __main = function() {
+    // 初始化滑动条
+    initConfigInput()
+
+    var canvas = GuaCanvas.new('#id-canvas')
+    canvas.setCorrection(status=true)
+
+    // gua3d中有
+    let mesh = AxeMesh.fromGua3d(illidan_gua3d, illidan_axeimage)
+    // let mesh = AxeMesh.fromAxe3d(cones)
+
+    let light = GuaVector.new(config['light_x'].value, config['light_y'].value, config['light_z'].value)
+
+    setInterval(function () {
+        canvas.clear()
+       // 在这里配置相机的内容？？去看一下滑条
+        canvas.camera = GuaCamera.new()
+
+        mesh.rotation.x = config.rotation_x.value
+        mesh.rotation.y = config.rotation_y.value
+        mesh.rotation.z = config.rotation_z.value
+
+        light.x = config.light_x.value
+        light.y = config.light_y.value
+        light.z = config.light_z.value
+        // log('light', light)
+        canvas.drawMesh(mesh, light)
+        canvas.render()
+    }, 1000/60)
+
+
+
+    // 必须要调用这个
+    canvas.render()
+}
+
+__main()
+</script>
+
+    </body>
+</html>

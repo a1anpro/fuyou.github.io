@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <title>axeimage</title>
+        <style media="screen">
+            canvas{
+                border: 1px solid black;
+            }
+        </style>
+        <script src="axeimage.js" charset="utf-8"></script>
+        <!-- 引入所有用到的文件 -->
+        <script src='renderer/gua_object.js'></script>
+        <script src='renderer/utils.js'></script>
+        <script src='renderer/vector.js'></script>
+        <script src='renderer/vertex.js'></script>
+        <script src='renderer/color.js'></script>
+        <script src='renderer/canvas.js'></script>
+        <script src='renderer/axemesh.js'></script>
+        <script src='renderer/matrix.js'></script>
+
+        <script src='axe3d/axe3d.js'></script>
+        <!-- 滑条配置 -->
+        <script src='config.js'></script>
+
+    </head>
+    <body>
+        <canvas id="id-canvas" width="256" height="256"></canvas>
+    </body>
+    <script type="text/javascript">
+        // 函数名应该用 const 修饰, 这样不会被意外修改
+        const __main = function() {
+            var canvas = GuaCanvas.new('#id-canvas')
+
+            let lines = chest_axeimage.split('\n')
+            // 没一行都是一行像素，用#隔开每个像素
+            lines = lines.splice(4)
+            let width = 256
+            let height = 256
+            let pos = 0
+            for (let i = 0; i < lines.length; ++i){
+                let l = lines[i]
+                let pixel_line = l.split('#')
+                for (let j = 0; j < pixel_line.length; ++j){
+                    let p = pixel_line[j]
+                    let [r, g, b, a] = p.split(' ').map(t => parseInt(t))
+                    let x = pos % width
+                    let y = pos / height
+                    let color = GuaColor.new(r, g, b, a)
+                    let position = GuaVector.new(x, y)
+                    canvas.drawPoint(position, color)
+                    ++pos
+                }
+            }
+
+            canvas.render()
+        }
+
+        __main()
+    </script>
+</html>
