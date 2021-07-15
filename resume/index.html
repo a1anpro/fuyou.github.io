@@ -1,10 +1,15 @@
 <!DOCTYPE html>
 <html lang="zh">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title></title>
-<link rel="stylesheet" href="./index.css">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title></title>
+    <link rel="stylesheet" href="./index.css">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/2.9.0/github-markdown.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.8.3/katex.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+
 </head>
 <body>
 <!--	<div id="nav-wrapper">-->
@@ -40,110 +45,139 @@
 <!--	</div>-->
 
 <div class="resume">
-	<font face="黑体" size=5>
-		<center>浮游</center>
-	</font>
-	<center>642535606#qq.com | 求职意向: 前端工程师</center>
-	<hr />
-<!--	<p><strong>教育经历</strong><br />-->
-<!--		华中科技大学 | 软件工程 | 硕士（2019 ~ 2022）<br />-->
-<!--		湖北经济学院 | 软件工程 | 学士（2015 ~ 2019）<br />-->
-<!--		CET-4 / CET-6</p>-->
-<!--	<hr />-->
-	<p><strong id="intern-exp">实习经历</strong><br />
-		字节跳动-抖音-主业务-前端实习生 | 2020.4 - 至今<br />
-		技术栈: <em><strong>TypeScript</strong></em> + <em><strong>React</strong></em> + <em><strong>MobX</strong></em> + <em><strong>Ant-Design</strong></em> + <em><strong>Node.js</strong></em><br />
-		使用 <em><strong>Ant-Design</strong></em> 完成多项后台管理页面的开发<br />
-		独立完成项目的 <em><strong>Webpack</strong></em> 性能优化, 降低打包体积，提高 build 速度，大大提升了研发效率和部署 速度<br />
-		原项目使用表格呈现数据，接手项目后，使用 <em><strong>ECharts</strong></em> 实现视频流量图表可视化，用户能更快更方 便地处理数据<br />
-		独立负责安全审批流过程组件的开发、小程序的开发, 各环节审批人能更方便的做内容审批<br />
-		抽离项目中重复使用的组件为公共组件，提高组件的可维护性<br />
-		为组内项目定制 <em><strong>ESLint</strong></em> 规范, 使组内开发代码更加规范化, 降低 code review 成本<br />
-		积极开展横向研究, 并在部门进行知识分享, 在部门内主讲关于 <em><strong>Webpack</strong></em> 性能优化、虚拟机原理的 分享会, 获得同事的一致好评</p>
-	<hr />
-	<p><strong id="project-exp">项目经历</strong><br />
-		<strong id="compiler">Compiler 相关项目</strong><br />
-		实现  <em><strong>JSON Parser</strong></em>，能实现 <em><strong>DSL</strong></em> 来定制项目需求;<br />
-		基于编译原理设计该语言，自设计词法类型(TokenType)、语法类型(AstType) ;<br />
-		通过确定有限状态自动机(<em><strong>Deterministic Finite Automaton / DFA</strong></em>) 实现词法分析器(<em><strong>Lexer</strong></em>);<br />
-		定义上下文无关文法(<em><strong>Context-free Grammer / CFG</strong></em>) 实现递归下降的语法分析器(<em><strong>Parser</strong></em>);<br />
-		实现 <em><strong>解释器</strong></em> 来执行代码, 实现面向对象语法、递归、闭包等高级特性;<br />
-		基于 <em><strong>Parser</strong></em> 实现 <em><strong>Linter</strong></em>、<em><strong>Uglify</strong></em> 等工具;<br />
-		开发过程采用自实现 <em><strong>TDD</strong></em> 自动化测试框架完成，自动打包源代码并支持热更新;</p>
-	<p><strong id="vm">汇编和虚拟机项目</strong><br />
-		用C语言设计并实现自定义 <em><strong>CPU</strong></em> 指令集、寄存器，并实现汇编器和 <em><strong>Register-based</strong></em> 虚拟机<br />
-		其中，指令集是自定义的类 <em><strong>RISC</strong></em> 指令集，并基于该指令集扩展实现伪指令<br />
-		设计并实现内存数据段、代码段、栈结构，实现无参函数和多参数函数的调用，并可实现函数递归调用<br />
-		设计并实现字符集、显存、虚拟显示器，可在虚拟显示器上显示字符及图像<br />
-		设计内存布局，并实现函数内存自动分配与释放<br />
-		对伪代码进行抽象，实现 <em><strong>类C语言</strong></em> 的语法实现<br />
-		实现 <em><strong>Debugger</strong></em>，支持对该虚拟机上运行的程序支持单步调试及断点调试<br />
-		了解计算机底层安全，如缓冲区溢出攻击等</p>
-	<p><strong id="game-engine">游戏引擎项目</strong><br />
-		用 <em><strong>JavaScript</strong></em> 语言实现游戏引擎，并使用该引擎编写 <em><strong>FlappyBird</strong></em>、雷电飞机大战、扫雷、消消乐等游戏；<br />
-		该游戏引擎支持以下功能：<br />
-		实现游戏资源预加载功能，程序运行前从资源管理器中预加载图片、声音等资源，无需在运行过程中重复加载，提高游戏运行时的性能；<br />
-		实现双向绑定机制，支持在游戏运行中实时暂停游戏、修改游戏 fps、角色运动速度等效果；<br />
-		实现事件注册机制，支持开发时易于注册键盘事件和响应函数，提高开发效率；<br />
-		实现游戏对象管理，如游戏中的静态对象（砖块等）、动态对象（行走的马里奥）的单独管理；<br />
-		支持游戏场景抽象功能，实现游戏在不同场景中任意切换；</p>
-	<p><strong id="OpenCV 图像处理项目">基于 <em><strong>OpenCV</strong></em> 的图像处理项目</strong><br />
-		使用 <em><strong>Python</strong></em> 与 <em><strong>OpenCV</strong></em> 视觉库，并基于 <em><strong>RPi</strong></em> 硬件设备开发的轮式智能小车项目，实现了目标跟踪、目标检测、场景分析、语音提醒等功能<br />
-		使用 <em><strong>OpenCV</strong></em> 的 <em><strong>DNN</strong></em> 模块，融合 <em><strong>SSD</strong></em> 目标检测和 <em><strong>KCF</strong></em> 跟踪算法并协同自实现的目标跟踪算法，实现视频画面的场景分析和目标物跟踪定位；<br />
-		其中自实现的目标跟踪算法对每帧图像画面进行解析，使用 <em><strong>SIFT</strong></em> 特征识别算法保证跟踪的用户在 <em><strong>KCF</strong></em> 算法跟丢后能迅速找回目标；<br />
-		使用 <em><strong>Socket</strong></em> 编程实现树莓派与远程主机的网络通信，实现服务端计算功能；<br />
-		通过服务端的计算后的控制信息来控制轮式小车加速、减速、左转、右转等的运动<br />
-		对目标检测和跟踪的结果进行场景分析，通过树莓派开发板上的语音硬件模块对用户进行语音播报路况；</p>
-	<p><strong id="other-projects">其他项目</strong><br />
-		<em><strong>GIF</strong></em> 解析、音频生成与压缩、哈夫曼等压缩算法的实现；<br />
-		使用 <em><strong>Python</strong></em> 实现爬虫项目，实现模拟登陆、动态爬取等功能，爬取豆瓣、豆瓣等平台数据，并使用 <em><strong>PyQuery</strong></em> 实现数据清理；<br />
-		使用 <em><strong>Python Flask</strong></em> 搭建校园 bbs 论坛，实现用户管理、发帖、主题热贴排序等功能；</p>
-	<hr />
-	<p><strong>专业技能</strong><br />
-		<strong>前端：</strong><br />
-		熟练掌握 <em><strong>HTML5</strong></em>，如语义化标签、离线存储、音频、视频等。能快速构建符合 <em><strong>W3C</strong></em> 标准并兼容 主流浏览器的页面<br />
-		熟悉 <em><strong>CSS</strong></em> 常见选择器与布局方案，如 <em><strong>Flexbox float position</strong></em> 等，能精准还原设计稿，实现响应式 设计<br />
-		熟练掌握原生 <em><strong>JavaScript</strong></em>, 熟悉 <em><strong>ES6</strong></em> 特性，如模板字符串、箭头函数、默认参数、<em><strong>Class、Promise</strong></em> 等<br />
-		熟练掌握 <em><strong>Webpack</strong></em> 原理，实现过 <em><strong>Webpack</strong></em> 核⼼功能，对 <em><strong>loader</strong></em> 和 <em><strong>plugin</strong></em> 有深⼊理解，能根据项⽬需求开发相应的 <em><strong>loader</strong></em> 和 <em><strong>plugin</strong></em> 快速解决问题，能提升现有 <em><strong>Webpack</strong></em> 项⽬的开发效率与开发体验<br />
-		熟悉掌握 <em><strong>babel</strong></em> 原理，可快速搭建常⻅技术栈的脚⼿架，配置统⼀的开发环境<br />
-		掌握类与面向对象的编程思想，具备在工作中封装、优化、重构项目代码的能力<br />
-		具备良好的编码风格，严格按照规范进行编码</p>
-	<p><strong>通用：</strong><br />
-		熟练掌握常见的编程语言 <em><strong>Python、JavaScript、C</strong></em> 等<br />
-		熟练掌握面向对象编程技术的封装、继承、多态特性<br />
-		熟悉 <em><strong>HTTP、TCP/IP、UDP</strong></em> 网络协议，能使用 <em><strong>Socket</strong></em> 实现 <em><strong>HTTP Server</strong></em><br />
-		掌握常见的 Web 安全知识原理及解决方案，如 <em><strong>XSS、CSRF、SQL</strong></em> 注入等<br />
-		熟练掌握常见的数据结构和算法，掌握相应的时间复杂度与空间复杂度<br />
-		熟练使用 <em><strong>Linux</strong></em> 操作系统，并能在其上进行开发<br />
-		了解操作系统基本知识，如进程与线程等<br />
-		熟悉编译原理、图形学、计算机体系结构等计算机基础学科</p>
-	<hr />
-	<p><strong>校园奖项</strong><br />
-		第 8 届蓝桥杯 C++组省级一等奖<br />
-		第 9 届蓝桥杯 Java 组全国二等奖<br />
-		2018 年中国高校计算机大赛-团体程序设计天梯赛湖北省二等奖<br />
-		第 11 届中国计算机设计大赛人工智能应用程序设计类全国一等奖<br />
-		连续三年获得校级奖学金，获得优秀毕业生等奖项</p>
+    <font face="黑体" size=5>
+        <center>浮游</center>
+    </font>
+    <center>642535606#qq.com | 求职意向: 前端工程师</center>
+    <hr/>
+    <!--    <p><strong>教育经历</strong><br />-->
+    <!--        华中科技大学 | 软件工程 | 硕士(全日制 985)					（2019 ~ 2022）<br />-->
+    <!--        湖北经济学院 | 软件工程 | 学士(全日制 一本)				      （2015 ~ 2019）<br />-->
+    <!--        <strong>CET-4 / CET-6</strong></p>-->
+    <!--    <hr />-->
+    <p><strong id="intern-exp">实习经历</strong><br/>
+        <strong>字节跳动</strong> - <strong>抖音</strong> - <strong>主业务</strong> - 前端实习生 | 2020.4 - 至今<br/>
+        技术栈: <em><strong>TypeScript</strong></em> + <em><strong>React</strong></em> + <em><strong>MobX</strong></em> +
+        <em><strong>Ant-Design</strong></em> + <em><strong>Node.js</strong></em></p>
+    <p><strong>业务介绍：</strong></p>
+    <ul>
+        <li>实习所在的项目组是服务于 <strong>TikTok</strong> 海外版抖音的运营后台，面向的直接用户是全球 3500+ 的运营人员，间接用户是全球几亿的 <strong>TikTok</strong>
+            端内端外用户；
+        </li>
+    </ul>
+    <p><strong>实习工作介绍：</strong></p>
+    <ul>
+        <li>主要参与视频推荐加热、视频管理、<strong>CRM</strong> 系统、用户标签系统、数据可视化等方面的工作；对平台的技术架构、工作流、运营方法论均有较深入的理解；</li>
+        <li>原项目使用表格呈现数据，无法直观的察觉数据的变动趋势，本人接手项目后，通过对数据进行自动化整理，并使用 <strong>ECharts</strong>
+            等工具开发了多个视频流量图表可视化页面，大大优化用户查找变化数据、定位数据的便捷程度；
+        </li>
+        <li>独立完成项目的 <strong>Webpack</strong> 性能优化，降低打包体积，将项目 <strong>build</strong> 速度提高了 65%，提升了开发体验且让部署上线的耗时更短；</li>
+        <li>独立负责安全审批流过程组件的开发、小程序的开发, 各环节审批人能更方便的做内容审批；<br/>为组内项目定制 <strong>ESLint</strong> 规范，使组内开发代码更加规范化，降低 <strong>code
+            review</strong> 成本；
+        </li>
+        <li>积极开展横向研究，并在部门进行知识分享，在部门内主讲关于 <strong>Webpack</strong> 性能优化、虚拟机原理的分享会，获得同事的一致好评；</li>
+    </ul>
+    <hr />
+    <p><strong id="project-exp">项目经历</strong><br />
+        <strong>Compiler 相关项目</strong></p>
+    <ul>
+        <li>实现  <em><strong>JSON Parser</strong></em>，能实现 <em><strong>DSL</strong></em> 来定制项目需求;</li>
+        <li>基于编译原理设计该语言，自设计词法类型(TokenType)、语法类型(AstType) ;</li>
+        <li>通过确定有限状态自动机(<em><strong>Deterministic Finite Automaton / DFA</strong></em>) 实现词法分析器(<em><strong>Lexer</strong></em>);</li>
+        <li>定义上下文无关文法(<em><strong>Context-free Grammer / CFG</strong></em>) 实现递归下降的语法分析器(<em><strong>Parser</strong></em>);</li>
+        <li>实现 <em><strong>解释器</strong></em> 来执行代码, 实现面向对象语法、递归、闭包等高级特性;</li>
+        <li>基于 <em><strong>Parser</strong></em> 实现 <em><strong>Linter</strong></em>、<em><strong>Uglify</strong></em> 等工具;</li>
+        <li>开发过程采用自实现 <em><strong>TDD</strong></em> 自动化测试框架完成，自动打包源代码并支持热更新;</li>
+    </ul>
+    <p><strong id="vm">汇编和虚拟机项目</strong></p>
+    <ul>
+        <li>用C语言设计并实现自定义 <em><strong>CPU</strong></em> 指令集、寄存器，并实现汇编器和 <em><strong>Register-based</strong></em> 虚拟机</li>
+        <li>其中，指令集是自定义的类 <em><strong>RISC</strong></em> 指令集，并基于该指令集扩展实现伪指令</li>
+        <li>设计并实现内存数据段、代码段、栈结构，实现无参函数和多参数函数的调用，并可实现函数递归调用</li>
+        <li>设计并实现字符集、显存、虚拟显示器，可在虚拟显示器上显示字符及图像</li>
+        <li>设计内存布局，并实现函数内存自动分配与释放</li>
+        <li>对伪代码进行抽象，实现 <em><strong>类C语言</strong></em> 的语法实现</li>
+        <li>实现 <em><strong>Debugger</strong></em>，支持对该虚拟机上运行的程序支持单步调试及断点调试</li>
+        <li>了解计算机底层安全，如缓冲区溢出攻击等</li>
+    </ul>
+    <p><strong id="game-engine">游戏引擎项目</strong></p>
+    <ul>
+        <li>用 <em><strong>JavaScript</strong></em> 语言实现游戏引擎，并使用该引擎编写 <em><strong>FlappyBird</strong></em>、雷电飞机大战、扫雷、消消乐等游戏；</li>
+        <li>该游戏引擎支持以下功能：</li>
+        <li>实现游戏资源预加载功能，程序运行前从资源管理器中预加载图片、声音等资源，无需在运行过程中重复加载，提高游戏运行时的性能；</li>
+        <li>实现双向绑定机制，支持在游戏运行中实时暂停游戏、修改游戏 fps、角色运动速度等效果；</li>
+        <li>实现事件注册机制，支持开发时易于注册键盘事件和响应函数，提高开发效率；</li>
+        <li>实现游戏对象管理，如游戏中的静态对象（砖块等）、动态对象（行走的马里奥）的单独管理；</li>
+        <li>支持游戏场景抽象功能，实现游戏在不同场景中任意切换；</li>
+    </ul>
+    <p><strong id="OpenCV 图像处理项目">基于 <em><strong>OpenCV</strong></em> 的图像处理项目</strong></p>
+    <ul>
+        <li>使用 <em><strong>Python</strong></em> 与 <em><strong>OpenCV</strong></em> 视觉库，并基于 <em><strong>RPi</strong></em> 硬件设备开发的轮式智能小车项目，实现了目标跟踪、目标检测、场景分析、语音提醒等功能</li>
+        <li>使用 <em><strong>OpenCV</strong></em> 的 <em><strong>DNN</strong></em> 模块，融合 <em><strong>SSD</strong></em> 目标检测和 <em><strong>KCF</strong></em> 跟踪算法并协同自实现的目标跟踪算法，实现视频画面的场景分析和目标物跟踪定位；</li>
+        <li>其中自实现的目标跟踪算法对每帧图像画面进行解析，使用 <em><strong>SIFT</strong></em> 特征识别算法保证跟踪的用户在 <em><strong>KCF</strong></em> 算法跟丢后能迅速找回目标；</li>
+        <li>使用 <em><strong>Socket</strong></em> 编程实现树莓派与远程主机的网络通信，实现服务端计算功能；</li>
+        <li>通过服务端的计算后的控制信息来控制轮式小车加速、减速、左转、右转等的运动；</li>
+        <li>对目标检测和跟踪的结果进行场景分析，通过树莓派开发板上的语音硬件模块对用户进行语音播报路况；</li>
+    </ul>
+    <p><strong id="other-projects">其他项目</strong></p>
+    <ul>
+        <li><em><strong>GIF</strong></em> 解析、音频生成与压缩、哈夫曼等压缩算法的实现；</li>
+        <li>使用 <em><strong>Python</strong></em> 实现爬虫项目，实现模拟登陆、动态爬取等功能，爬取豆瓣、豆瓣等平台数据，并使用 <em><strong>PyQuery</strong></em> 实现数据清理；</li>
+        <li>使用 <em><strong>Python Flask</strong></em> 搭建校园 bbs 论坛，实现用户管理、发帖、主题热贴排序等功能；</li>
+    </ul>
+    <hr />
+    <p><strong>专业技能</strong><br />
+        <strong>前端：</strong></p>
+    <ul>
+        <li>熟练掌握 <strong>HTML5</strong>，如语义化标签、离线存储、音频、视频等。能快速构建符合 W3C 标准并兼容 主流浏览器的页面</li>
+        <li>熟悉 <strong>CSS</strong> 常见选择器与布局方案，如 <strong>Flexbox float position</strong> 等，能精准还原设计稿，实现响应式 设计</li>
+        <li>熟练掌握原生 JavaScript, 熟悉 ES6 特性，如模板字符串、箭头函数、默认参数、<strong>Class</strong>、<strong>Promise</strong> 等</li>
+        <li>熟练掌握 <strong>Webpack</strong> 原理，实现过 <strong>Webpack</strong> 核⼼功能，对 <strong>loader</strong> 和 <strong>plugin</strong> 有深⼊理解，能根据项⽬需求开发相应的 <strong>loader</strong> 和 <strong>plugin</strong> 快速解决问题，能提升现有 <strong>Webpack</strong> 项⽬的开发效率与开发体验</li>
+        <li>熟悉掌握 <strong>babel</strong> 原理，可快速搭建常⻅技术栈的脚⼿架，配置统⼀的开发环境</li>
+        <li>掌握类与面向对象的编程思想，具备在工作中封装、优化、重构项目代码的能力</li>
+        <li>具备良好的编码风格，严格按照规范进行编码</li>
+    </ul>
+    <p><strong>通用：</strong></p>
+    <ul>
+        <li>熟练掌握常见的编程语言 <strong>Python</strong>、<strong>JavaScript</strong>、<strong>C</strong> 等</li>
+        <li>熟练掌握面向对象编程技术的封装、继承、多态特性</li>
+        <li>熟悉 <strong>HTTP、TCP/IP、UDP</strong> 网络协议，能使用 <strong>Socket</strong> 实现 <strong>HTTP Server</strong></li>
+        <li>掌握常见的 Web 安全知识原理及解决方案，如 <strong>XSS、CSRF、SQL</strong> 注入等</li>
+        <li>熟练掌握常见的数据结构和算法，掌握相应的时间复杂度与空间复杂度</li>
+        <li>熟练使用 <strong>Linux</strong> 操作系统，并能在其上进行开发</li>
+        <li>了解操作系统基本知识，如进程与线程等</li>
+        <li>熟悉编译原理、图形学、计算机体系结构等计算机基础学科</li>
+    </ul>
+    <hr />
+    <p><strong>校园奖项</strong></p>
+    <ul>
+        <li>第 8 届蓝桥杯 C++组省级一等奖</li>
+        <li>第 9 届蓝桥杯 Java 组全国二等奖</li>
+        <li>2018 年中国高校计算机大赛-团体程序设计天梯赛湖北省二等奖</li>
+        <li>第 11 届中国计算机设计大赛人工智能应用程序设计类全国一等奖</li>
+        <li>连续三年获得校级奖学金，获得优秀毕业生等奖项</li>
+    </ul>
+
 </div>
 <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script>
-	const log = console.log.bind(console)
-	const e = element => document.querySelector(element)
-	window.onresize=function(){
-		// var docWidth = document.body.offsetWidth
-		// var nav = $('#nav-wrapper')
-		// 隐藏侧边栏
-		// nav.addClass('hide')
+    const log = console.log.bind(console)
+    const e = element => document.querySelector(element)
+    window.onresize = function () {
+        // var docWidth = document.body.offsetWidth
+        // var nav = $('#nav-wrapper')
+        // 隐藏侧边栏
+        // nav.addClass('hide')
 
-		// 隐藏侧边栏
-		// if (docWidth < 960) {
-		// 	nav.addClass('hide')
-		// } else {
-		// 	if (nav.hasClass('hide')) {
-		// 		nav.removeClass('hide')
-		// 	}
-		// }
-	}
+        // 隐藏侧边栏
+        // if (docWidth < 960) {
+        // 	nav.addClass('hide')
+        // } else {
+        // 	if (nav.hasClass('hide')) {
+        // 		nav.removeClass('hide')
+        // 	}
+        // }
+    }
 </script>
 
 </body>
