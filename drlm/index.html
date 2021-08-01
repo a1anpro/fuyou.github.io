@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>短链生成</title>
+</head>
+<body>
+<input id="src" />
+<button id="generate">生成</button>
+<div id="drlm">
+
+</div>
+<script>
+    const e = (sel) => document.querySelector(sel)
+    const log = console.log.bind(console)
+
+    const ajax = (method, url, data, headers, callback) => {
+        let r = new XMLHttpRequest()
+        r.open(method, url, true)
+
+        // 设置 headers
+        Object.entries(headers).forEach(([k, v]) => {
+            r.setRequestHeader(k, v)
+        })
+        r.onreadystatechange = () => {
+            if (r.readyState === 4) {
+                callback(r.response)
+            }
+        }
+        if (method === 'POST') {
+            data = JSON.stringify(data)
+        }
+        r.send(data)
+    }
+
+    const corsAjax = () => {
+        let url = 'https://api.github.com/repos/mayandev/gh-pages-url-shortener-db/issues'
+        let method = 'POST'
+        let data = {
+            title: 'https://fep3.zulip.kybmig.cc/#narrow/stream/94-game/topic/.E3.80.90review.E3.80.91.E6.B5.AE.E6.B8.B8.E8.B4.9D.E5.A1.9E.E5.B0.94.E4.BB.A3.E7.A0.81/near/62041',
+        }
+        let headers = {
+            'Content-Type': 'application/json',
+        }
+        ajax(method, url, data, headers, (r) => {
+            log('cors r is', r)
+        })
+    }
+
+    const _main = () => {
+        let b = e('#generate')
+        let input = e('#src')
+        b.addEventListener('click', ()=> {
+            let src = input.value
+            log('点击', src)
+            // 发送请求
+            corsAjax()
+        })
+    }
+    _main()
+</script>
+</body>
+</html>

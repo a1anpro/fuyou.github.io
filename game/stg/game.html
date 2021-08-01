@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>stg</title>
+    <style media="screen">
+        canvas {
+            border: 1px black solid;
+        }
+        body {
+            text-align: center;
+        }
+    </style>
+    <!-- 关卡数据 -->
+    <script src='level.js'></script>
+    <!-- game 相关文件 -->
+    <script src='utils.js'></script>
+    <script src='game/game.js'></script>
+    <script src='game/yan_image.js'></script>
+    <script src='game/yan_label.js'></script>
+
+    <!-- 场景文件 -->
+    <script src='scene/elements/player.js'></script>
+    <script src='scene/elements/cloud.js'></script>
+    <script src='scene/elements/bullet.js'></script>
+    <script src='scene/elements/enemy.js'></script>
+    <script src='scene/elements/life.js'></script>
+    <script src='scene/elements/timer.js'></script>
+    <script src='scene/elements/particle_system.js'></script>
+
+    <script src='scene/main/yanscene.js'></script>
+    <script src='scene/main/scene.js'></script>
+
+    <!-- 结束和标题场景 -->
+    <script src='scene/main/beginscene.js'></script>
+</head>
+<body>
+<canvas id="id-canvas" width="400" height="600"></canvas>
+<hr>
+<label>
+    规则: wasd 上下左右 \ 按 k 开始 \ 按 j 发射
+</label>
+<div class="">
+    <label>
+        <input class="auto-slider" id=id-input-speed type="range" value="1">
+        游戏节奏 ：<span class="label"></span>
+    </label>
+</div>
+
+<div class="">
+    <label>
+        <input type="range" class="auto-slider" value="1"
+               data-value="config.player_speed">
+        玩家速度：<span class="label"></span>
+    </label>
+</div>
+<div class="">
+    <label>
+        <input type="range" class="auto-slider" value="1"
+               data-value="config.bullet_speed">
+        子弹速度：<span class="label"></span>
+    </label>
+</div>
+
+<div class="">
+    <label>
+        <input type="range" class="auto-slider" value="1"
+               min=-5
+               max=8
+               data-value="config.cloud_speed">
+        云的速度：<span class="label"></span>
+    </label>
+</div>
+
+<script src=main.js>
+</script>
+<script>
+    var es = sel => document.querySelectorAll(sel)
+    var bindAll = function (sel, eventName, callback) {
+        var l = es(sel)
+        for (var i = 0; i < l.length; i++) {
+            var input = l[i]
+            input.addEventListener(eventName, function (event) {
+                callback(event)
+            })
+        }
+    }
+
+    bindAll('.auto-slider', 'input', function (event) {
+        var target = event.target
+        var bindVar = target.dataset.value
+        var v = target.value
+        eval(bindVar + '=' + v)
+        //离它最近的label
+        var label = target.closest('label').querySelector('.label')
+        label.innerText = v
+    })
+</script>
+</body>
+</html>
